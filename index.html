@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报告列表 · Daily Signal</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+            padding: 40px 32px;
+            max-width: 560px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #0b1e33;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.3px;
+        }
+        .sub {
+            color: #5b6f86;
+            font-size: 15px;
+            margin: 0 0 28px 0;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li { margin-bottom: 12px; }
+        a.report-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: #f1f4f8;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #1a2b3c;
+            font-weight: 500;
+            font-size: 17px;
+            transition: background 0.2s, transform 0.1s;
+            border: 1px solid transparent;
+        }
+        a.report-link:hover {
+            background: #e5eaf0;
+            border-color: #cdd6e0;
+        }
+        a.report-link:active { transform: scale(0.97); }
+        .arrow {
+            color: #7c8ea3;
+            font-size: 20px;
+            margin-left: 12px;
+            opacity: 0.6;
+        }
+        .footer-note {
+            margin-top: 28px;
+            font-size: 13px;
+            color: #8b9bb0;
+            text-align: center;
+            border-top: 1px solid #e9edf2;
+            padding-top: 20px;
+        }
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>📈 每日信号报告</h1>
+        <div class="sub">点击报告名称，自动适配当前设备</div>
+        <ul>
+            <li><a class="report-link" href="#" data-base="reports/au_all_alphas">
+                <span>🥇 黄金 All Alphas</span>
+                <span class="arrow">→</span>
+            </a></li>
+            <li><a class="report-link" href="#" data-base="reports/sc_all_alphas">
+                <span>🛢️ 原油 All Alphas</span>
+                <span class="arrow">→</span>
+            </a></li>
+            <li><a class="report-link" href="#" data-base="reports/stock_index_all_alphas">
+                <span>📊 股指 All Alphas</span>
+                <span class="arrow">→</span>
+            </a></li>
+            <li><a class="report-link" href="#" data-base="reports/treasury_all_alphas">
+                <span>🏦 国债 All Alphas</span>
+                <span class="arrow">→</span>
+            </a></li>
+        </ul>
+        <div class="footer-note">
+            💡 宽度 &lt; 768px 自动切到移动版 · 反之 PC 版
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            function getDeviceSuffix() {
+                return window.innerWidth < 768 ? '_mobile.html' : '_pc.html';
+            }
+
+            document.querySelectorAll('.report-link').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var base = this.getAttribute('data-base');
+                    var suffix = getDeviceSuffix();
+                    window.location.href = base + suffix;
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
