@@ -86,45 +86,36 @@
 <body>
     <div class="card">
         <h1>📈 每日信号报告</h1>
-        <div class="sub">点击报告名称，自动适配当前设备</div>
+        <div class="sub">点击报告名称，自动加载动态图表（ECharts）</div>
         <ul>
-            <li><a class="report-link" href="#" data-base="reports/au_all_alphas">
-                <span>🥇 黄金 All Alphas</span>
-                <span class="arrow">→</span>
-            </a></li>
-            <li><a class="report-link" href="#" data-base="reports/sc_all_alphas">
-                <span>🛢️ 原油 All Alphas</span>
-                <span class="arrow">→</span>
-            </a></li>
-            <li><a class="report-link" href="#" data-base="reports/stock_index_all_alphas">
-                <span>📊 股指 All Alphas</span>
-                <span class="arrow">→</span>
-            </a></li>
-            <li><a class="report-link" href="#" data-base="reports/treasury_all_alphas">
-                <span>🏦 国债 All Alphas</span>
-                <span class="arrow">→</span>
-            </a></li>
+            <li>
+                <a class="report-link" href="report.html?asset=au">
+                    <span>🥇 黄金 All Alphas</span>
+                    <span class="arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a class="report-link" href="report.html?asset=sc">
+                    <span>🛢️ 原油 All Alphas</span>
+                    <span class="arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a class="report-link" href="report.html?asset=stock">
+                    <span>📊 股指 All Alphas</span>
+                    <span class="arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a class="report-link" href="report.html?asset=treasury">
+                    <span>🏦 国债 All Alphas</span>
+                    <span class="arrow">→</span>
+                </a>
+            </li>
         </ul>
         <div class="footer-note">
-            💡 宽度 &lt; 768px 自动切到移动版 · 反之 PC 版
+            💡 数据从 <code>data/*.json</code> 动态加载 · 页面自适应桌面和移动端
         </div>
     </div>
-
-    <script>
-        (function() {
-            function getDeviceSuffix() {
-                return window.innerWidth < 768 ? '_mobile.html' : '_pc.html';
-            }
-
-            document.querySelectorAll('.report-link').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var base = this.getAttribute('data-base');
-                    var suffix = getDeviceSuffix();
-                    window.location.href = base + suffix;
-                });
-            });
-        })();
-    </script>
 </body>
 </html>
