@@ -129,7 +129,6 @@
 
     let chart = null;
     let cachedData = null;
-    let currentCols = 0;
     let currentPoints = 976; // 当前显示窗口（数据点数）
 
     // 布局断点：> 768px 两列，否则单列
@@ -153,9 +152,14 @@
     function render() {
         const { columns, index, data: values } = cachedData;
         const cols = layoutCols();
-        currentCols = cols;
         const n = columns.length;
         const rows = Math.ceil(n / cols);
+
+        // 记录各面板当前缩放窗口，重排后原样恢复
+        let prevZoom = null;
+        if (chart) {
+            prevZoom = chart.getOption().dataZoom.map(d => ({ start: d.start, end: d.end }));
+        }
 
         const TITLE_H = 20;    // 因子名称行高
         const SLIDER_H = 24;   // 每个面板专属时间滑块行高
@@ -306,8 +310,15 @@
             dataZoom: dataZoom,
         }, true);
 
-        // 恢复/应用当前显示窗口
-        setRange(currentPoints);
+        // 恢复缩放窗口：重排前有就原样恢复，否则应用默认范围
+        if (prevZoom) {
+            chart.dispatchAction({
+                type: 'dataZoom',
+                batch: prevZoom.map((z, idx) => ({ dataZoomIndex: idx, start: z.start, end: z.end })),
+            });
+        } else {
+            setRange(currentPoints);
+        }
     }
 
     fetch(dataUrl)
@@ -343,15 +354,11 @@
                 : rangeBar.querySelector('[data-count="0"]');
             defaultBtn.classList.add('active');
 
-            // 窗口变化：列数不变只 resize，跨断点则重排
+            // 窗口变化：面板几何尺寸依赖像素宽度，必须整体重排（150ms 防抖）
             let resizeTimer = null;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    if (!chart) return;
-                    if (layoutCols() !== currentCols) render();
-                    else chart.resize();
-                }, 150);
+                resizeTimer = setTimeout(() => { if (chart) render(); }, 150);
             });
         })
         .catch(error => {
